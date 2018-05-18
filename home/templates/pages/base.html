@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'css/mycss.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.css' %}"/>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" />
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<div class="full-container">
+<div class="cover-container">
+    <div class="header-container">
+        <div class="container-header">
+            <div class="container-logo">
+                <a href="{% url 'index' %}">Watermark - Đoàn Ngọc Vương</a>
+            </div>
+        </div>
+        <div class="menu" style="position: absolute; left: 10%;top:0;">
+            <ul>
+              <li><a id="trangchu" class="active" href="{% url 'index' %}">Trang chủ</a></li>
+                {% if request.user.is_superuser %}
+              <li><a id="dangnhac" class="noactive" href="{% url 'upload' %}">Đăng nhạc</a></li>
+                {% endif %}
+              <li><a id="checkbanquyen" class="noactive" href="{% url 'checkkey' %}">Check bản quyền</a></li>
+            </ul>
+        </div>
+         <div class="menu" style="position: absolute; right: 10%;top:0;">
+            {% if user.username %}
+                <p style="position: relative; float: left; color: white; font-size: 20px; text-align: center; margin-right: 10px; margin-top: 20px">Xin chào {{ user.username }}</p>
+                <ul>
+                     <li><a href="{% url 'logout' %}">Đăng xuất</a></li>
+                </ul>
+
+            {% else %}
+            <ul>
+              <li><a href="{% url 'login' %}">Đăng nhập</a></li>
+              <li><a href="{% url 'register' %}">Đăng ký</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    {% block contentbody %}
+    {% endblock %}
+</div>
+
+</div>
+</body>
+</html>

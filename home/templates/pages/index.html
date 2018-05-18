@@ -1,0 +1,127 @@
+{% extends "pages/base.html" %}
+{% load staticfiles %}
+{% block title %}Home page{% endblock %}
+{% block contentbody %}
+
+    <div class="body-container">
+        <div class="music-container">
+             <div style="margin-left: 10px; margin-top: 10px;">
+                <i><img id="show-list-music" src="{% static 'image/list.png' %}" width="48" height="48"/></i>
+            </div>
+            <div class="music-container-show" style="display: none;width: 80%;margin-top: 5%; margin-left: 10%; height: 75%; background-color: rgba(229, 230, 203, 0.8);">
+                <table id="list-music-song">
+                <tr>
+                    <th>#</th>
+                    <th>Tên bài hát</th>
+                    <th>Ca sĩ</th>
+                    <th>Trạng thái</th>
+                </tr>
+                 {% for music,mua in list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ music.name }}</td>
+                        <td>{{ music.casi }}</td>
+                        {% if mua == 1 %}
+                            <td>ĐÃ MUA</td>
+                        {% else %}
+                            <td><a href="buymusic/{{ music.id }}">MUA</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+        <div class="media-container">
+            <div class="header-media">
+                <div class="aboutname-media" style="text-align: center;">
+                    <h3 style="color: violet">Sơn Tùng</h3>
+                    <h5 style="color: violet">Lạc Trôi</h5>
+                </div>
+                <div class="seekbar-media">
+                    <span class="runing_time" style="margin-left: 5px; color: white">0:00</span>
+                    <input class="seekbar" type="range" value="0">
+                    <span class="song_long" style="margin-left: 5px; position:absolute;color: white">0:00</span>
+                </div>
+                <div class="controler-media">
+                    <i><img class="iconplay" src="{% static 'image/play.png' %}"/></i>
+                    <i><img class="iconskip" src="{% static 'image/skip.png' %}"/></i>
+                    <i><img class="iconstop" src="{% static 'image/stop.png' %}"/></i>
+                </div>
+            </div>
+            <div class="body-media">
+                <table id="list-music-song">
+                    {% for music in damua %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ music.music.name }}</td>
+                        <td>{{ music.music.casi }}</td>
+                        <td><a href="dowload/{{ music.music.link }}">Tải về</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        var link = [
+        {% for music in damua %}
+            "{{ music.music.link }}",
+        {% endfor %}
+        ]
+        {% for music in damua %}
+           console.log("{{ music.music.link }}")
+        {% endfor %}
+        var current = 0;
+        var audio = new Audio("../static/musics/"+link[current]);
+        var i = 0;
+        var audioTotalTime = 0;
+        $(".iconplay").on("click",function () {
+            if(i == 0){
+                i = 1;
+                audio.play();
+                $(this).attr('src','{% static 'image/pause.png'  %}');
+                updateCurrentTime();
+                audioTotalTime = audio.duration / 60;
+                $('.song_long').text(Math.round(audioTotalTime * 100) / 100);
+            }
+            else{
+                i = 0;
+                audio.pause();
+                $(this).attr('src','{% static 'image/play.png'  %}');}});
+        $(".iconskip").on("click",function () {
+            audio.pause();
+            if(current == link.size()){
+                current = 0;
+            }
+            else
+                current++;
+            audio = new Audio("../static/musics/"+link[current]);
+            audio.play();
+        })
+        $(".seekbar").on("click",function(){
+            audio.pause();
+            audio.currentTime = audioTotalTime * $(this).val();
+            audio.play();});
+        function updateCurrentTime(){
+            setInterval(function(){
+            var time = audio.currentTime;
+            var minutes = Math.floor(time / 60);
+            var seconds = Math.floor(time);
+            seconds = (seconds - (minutes * 60 )) < 10 ? ('0' + (seconds - (minutes * 60 ))) : (seconds - (minutes * 60 ));
+            var currentTime = minutes + ':' + seconds;
+            $('.runing_time').text(currentTime);
+            $(".seekbar").val(time/audioTotalTime )
+            },1000)};
+    </script>
+    <script>
+        $(".music-container-show").toggle();
+        $("#show-list-music").click(function () {
+            $(".music-container-show").toggle();
+        });
+    </script>
+    <script>
+        $('#trangchu').removeClass('noactive').addClass('active');
+        $('#dangnhac').removeClass('active').addClass('noactive');
+        $('#checkbanquyen').removeClass('active').addClass('noactive');
+    </script>
+{% endblock %}

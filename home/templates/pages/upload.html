@@ -1,0 +1,29 @@
+{% extends 'pages/base.html' %}
+{% block contentbody %}
+    <div class="upload-container" style="position: relative;color:white; width: 40%; margin-left: 30%;height: 450px; margin-right: 20%; background-color: rgba(0,0,0,0.6); margin-top: 100px">
+    <div style="margin-left: 20%">
+        <h3 style="padding: 10px;margin-left:90px">ĐĂNG NHẠC</h3>
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="position: relative;display: block; width: 100%; padding: 10px">
+            <h5>Link:</h5>
+            <input style="position: relative;width: 80%" type="file" required name="myfile"></div>
+        <div style="position: relative;display: block; width: 100%;padding: 10px">
+            <h5>Tên bài hát</h5>
+            <input style="position: relative;width: 80%" type="text" required name="namesong"></div>
+        <div style="position: relative;display: block; width: 100%;padding: 10px">
+            <h5>Ca sĩ</h5>
+            <input style="position: relative;width: 80%" type="text" required name="singer"></div>
+        <button type="submit" style="background-color: #1c7430;margin-top: 15px;margin-left:100px; padding: 15px 30px">HOÀN THÀNH</button>
+        </form>
+        {% if uploaded_file_url %}
+        <p>Thông báo: {{ uploaded_file_url }}</p>
+        {% endif %}
+    </div>
+    </div>
+    <script>
+        $('#trangchu').removeClass('active').addClass('noactive');
+        $('#dangnhac').removeClass('noactive').addClass('active');
+        $('#checkbanquyen').removeClass('active').addClass('noactive');
+    </script>
+{% endblock %}

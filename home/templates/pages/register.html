@@ -1,0 +1,16 @@
+{% extends 'pages/base.html' %}
+{% block contentbody %}
+    <div class="login-container">
+    <div class="login-page">
+        <div class="form">
+            <form class="register-form" method="post" action=".">
+                {% csrf_token %}
+                <h4>Đăng kí</h4>
+                {{ form.as_p }}
+                <button>create</button>
+                <p class="message">Sẵn sàng đăng nhập? <a href="/home/login">Đăng nhập</a></p>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

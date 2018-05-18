@@ -1,0 +1,21 @@
+{% extends 'pages/base.html' %}
+{% block contentbody %}
+    <div class="login-container">
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" method="post">
+                {% csrf_token %}
+                {% for key,value in form.error.items %}
+                    {{ value }}
+                {% endfor %}
+                <h4>Đăng nhập</h4>
+                <p><label>Tài khoản:</label>{{ form.username }}</p>
+                <p><label>Mật khẩu:</label>{{ form.password }}</p>
+                <input type="hidden" name="next" value="/home">
+                <button>login</button>
+                <p class="message">Chưa có tài khoản?<a href="/home/register/">Đăng kí</a></p>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}
